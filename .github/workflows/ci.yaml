@@ -1,0 +1,77 @@
+name: Python CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Set up Python + cache dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      # 3. Install dependencies + verify lockfile
+      - name: Install dependencies
+        run: |
+          uv sync
+          uv lock --check
+
+      # 4. Run tests and generate coverage report
+      - name: Run tests with coverage
+        run: pytest --cov=src --cov-report=xml
+
+      # 5. Security linting
+      - name: Run Bandit security checks
+        run: bandit -r src/
+
+      # 6. Dependency vulnerability scan
+      - name: Run pip-audit
+        run: pip-audit
+
+  style:
+    name: Code Quality & Type Checking
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Install dependencies
+        run: uv sync
+
+      # 1. Linting & formatting
+      - name: Run Ruff lint & format check
+        run: |
+          uvx ruff check .
+          uvx ruff format --check .
+
+      # 2. Type checking
+      - name: Run mypy
+        run: uvx mypy src/

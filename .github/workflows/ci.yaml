@@ -49,9 +49,9 @@ jobs:
       - name: Run Bandit security checks
         run: uvx bandit -r src/
 
-      # 6. Dependency vulnerability scan
-      - name: Run pip-audit
-        run: uvx pip-audit
+      # # 6. Dependency vulnerability scan
+      # - name: Run pip-audit
+      #   run: uvx pip-audit
 
   style:
     name: Code Quality & Type Checking

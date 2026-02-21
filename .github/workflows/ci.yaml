@@ -26,13 +26,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
-        
-      - name: Install uv
-        run: pip install uv
 
       # 3. Install dependencies + verify lockfile
       - name: Install dependencies
         run: |
+          pip install uv
           uv sync
           uv lock --check
 
@@ -71,11 +69,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
 
-      - name: Install uv
-        run: pip install uv
-
       - name: Install dependencies
-        run: uv sync
+        run: |
+          pip install uv
+          uv sync
 
       # 1. Linting & formatting
       - name: Run Ruff lint & format check

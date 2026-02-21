@@ -1,7 +1,5 @@
 # Allegro-Project
-[![CI](https://github.com/AntoninaGardzielewska/Allegro-Project/actions/workflows/ci.yml/badge.svg)](https://github.com/AntoninaGardzielewska/Allegro-Project/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-0%25-red)]()
-[![Security](https://img.shields.io/badge/security-passed-brightgreen)]()
+[![CI](https://github.com/AntoninaGardzielewska/Allegro-Project/actions/workflows/ci.yaml/badge.svg)](https://github.com/AntoninaGardzielewska/Allegro-Project/actions/workflows/ci.yaml)
 
 A Python application that allows users to create a shopping list and automatically finds the best price for each item on Allegro.
 

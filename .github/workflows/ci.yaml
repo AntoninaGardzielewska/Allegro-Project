@@ -27,8 +27,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
         
-      - name: Install uv & uvx
-        run: pip install uv uvx
+      - name: Install uv
+        run: pip install uv
 
       # 3. Install dependencies + verify lockfile
       - name: Install dependencies
@@ -66,8 +66,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
 
-      - name: Install uv & uvx
-        run: pip install uv uvx
+      - name: Install uv
+        run: pip install uv
 
       - name: Install dependencies
         run: uv sync

@@ -42,11 +42,11 @@ jobs:
 
       # 5. Security linting
       - name: Run Bandit security checks
-        run: bandit -r src/
+        run: uvx bandit -r src/
 
       # 6. Dependency vulnerability scan
       - name: Run pip-audit
-        run: pip-audit
+        run: uvx pip-audit
 
   style:
     name: Code Quality & Type Checking

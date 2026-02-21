@@ -1,1 +1,29 @@
+# Python
 .venv
+env/
+__pycache__/
+*.pyc
+*.pyo
+.mypy_cache
+.pytest_cache
+.ruff_cache
+
+# Packaging / builds
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Coverage reports
+coverage.xml
+htmlcov/
+
+# IDE / editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db

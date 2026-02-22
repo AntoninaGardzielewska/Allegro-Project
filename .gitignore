@@ -15,6 +15,7 @@ dist/
 .eggs/
 
 # Coverage reports
+.covarage
 coverage.xml
 htmlcov/
 

@@ -36,7 +36,12 @@ jobs:
 
       # 4. Run tests and generate coverage report
       - name: Run tests with coverage
-        run: uv run pytest tests/ --cov=src --cov-report=xml
+        run: |
+          uv run pytest tests/ \
+            --cov=src \
+            --cov-report=term \
+            --cov-report=term-missing \
+            --cov-report=xml
       
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5

@@ -20,17 +20,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      # 2. Set up Python + cache dependencies
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      # 2. Set up Python + uv
+      - name: Set up Python & uv
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python-version }}
-          cache: "pip"
 
       # 3. Install dependencies + verify lockfile
       - name: Install dependencies
         run: |
-          pip install uv
           uv sync
           uv lock --check
 
@@ -42,19 +40,16 @@ jobs:
             --cov-report=term \
             --cov-report=term-missing \
             --cov-report=xml
-      
+
+      # 5. Upload coverage reports to Codecov
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      # 5. Security linting
+      # 6. Security linting
       - name: Run Bandit security checks
         run: uvx bandit -r src/
-
-      # # 6. Dependency vulnerability scan
-      # - name: Run pip-audit
-      #   run: uvx pip-audit
 
   style:
     name: Code Quality & Type Checking
@@ -64,42 +59,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Python & uv
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: "3.12"
-          cache: "pip"
 
       - name: Install dependencies
         run: |
-          pip install uv
           uv sync
           pip install types-requests
 
-      # 1. Linting & formatting
+      # Linting & formatting
       - name: Run Ruff lint & format check
         run: |
           uvx ruff check .
           uvx ruff format --check .
-  
+
   test-mypy:
     name: Mypy typechecking tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python & uv
+        uses: astral-sh/setup-uv@v7
         with:
-          python-version: '3.12'
+          python-version: '3.13'
 
       - name: Install dependencies
-        run: |
-          pip install uv
-          uv sync --group typechecking --all-extras
+        run: uv sync --group typechecking --all-extras
 
-      - run: mkdir coverage
-
-      
-      # 1. Type checking
+      # Type checking
       - name: Run mypy tests
-        run: uvx mypy src/
+        run: uv run mypy src/

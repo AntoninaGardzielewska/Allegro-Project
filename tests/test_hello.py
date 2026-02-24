@@ -1,4 +1,4 @@
-from src.my_project.hello import hello
+from src.my_app.hello import hello
 
 
 def test_hello():

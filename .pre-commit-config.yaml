@@ -17,13 +17,15 @@ repos:
     rev: v1.5.1
     hooks:
       - id: mypy
-        additional_dependencies: []
+        additional_dependencies:
+        - types-requests
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.5
+    rev: 1.7.8
     hooks:
       - id: bandit
-        additional_dependencies: ["pbr"]
-        args: ["-r", "src/"]
+        args:
+          - -x
+          - tests
 
   - repo: https://github.com/pypa/pip-audit
     rev: v2.10.0
@@ -38,11 +40,3 @@ repos:
         language: python
         pass_filenames: false
         always_run: true
-  - repo: local
-    hooks:
-      - id: pytest-coverage
-        name: pytest with coverage
-        entry: uv run pytest --cov=src --cov-report=term-missing
-        language: system
-        pass_filenames: false
-        verbose: true

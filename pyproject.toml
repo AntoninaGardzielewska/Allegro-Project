@@ -21,6 +21,13 @@ dev = [
     "pytest>=9.0.2",
     "pytest-cov>=7.0.0",
 ]
+typechecking = [
+    'mypy',
+    'pyright',
+    'pyrefly',
+    'pydantic-settings',
+]
+
 
 [tool.bandit]
 exclude_dirs = ["tests"]

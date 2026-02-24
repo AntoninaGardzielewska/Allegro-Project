@@ -18,7 +18,7 @@ jobs:
     steps:
       # 1. Checkout repository
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # 2. Set up Python + cache dependencies
       - name: Set up Python
@@ -59,19 +59,15 @@ jobs:
   style:
     name: Code Quality & Type Checking
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.12"]
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.12"
           cache: "pip"
 
       - name: Install dependencies
@@ -85,7 +81,23 @@ jobs:
         run: |
           uvx ruff check .
           uvx ruff format --check .
+  
+  test-mypy:
+    name: Mypy typechecking tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
 
-      # 2. Type checking
-      - name: Run mypy
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: uv sync --group typechecking --all-extras
+
+      - run: mkdir coverage
+
+      
+      # 1. Type checking
+      - name: Run mypy tests
         run: uvx mypy src/

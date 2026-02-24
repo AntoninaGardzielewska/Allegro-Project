@@ -78,6 +78,7 @@ jobs:
         run: |
           pip install uv
           uv sync
+          pip install types-requests
 
       # 1. Linting & formatting
       - name: Run Ruff lint & format check

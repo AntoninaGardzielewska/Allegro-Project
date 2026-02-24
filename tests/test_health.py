@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 from requests import Response
 from typing import cast
 
-from src.routes.health import app
+from src.main import app
 
 client = TestClient(app)
 

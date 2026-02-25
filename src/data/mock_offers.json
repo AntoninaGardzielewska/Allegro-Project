@@ -1,0 +1,17 @@
+[
+  {
+    "id": "eeb2a170-d000-4625-b1d6-ed94311f40b5",
+    "name": "Offer 1",
+    "description": "This is first offer"
+  },
+  {
+    "id": "390c0082-b65d-495b-b718-2faca86c8d2d",
+    "name": "Offer 2",
+    "description": null
+  },
+  {
+    "id": "0d54b060-8e50-4eae-bdfc-7ca92886773c",
+    "name": "Offer 3",
+    "description": "This is the description for the third object"
+  }
+]

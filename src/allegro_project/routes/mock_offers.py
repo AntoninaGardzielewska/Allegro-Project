@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import ValidationError
 
-from src.models.offer import Offer
-from src.services.mock_offer_client import get_offer_by_id, get_offers
+from allegro_project.models.offer import Offer
+from allegro_project.services.mock_offer_client import get_offer_by_id, get_offers
 
 router = APIRouter()
 

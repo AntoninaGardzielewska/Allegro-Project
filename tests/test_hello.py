@@ -1,4 +1,4 @@
-from src.my_app.hello import hello
+from allegro_project.my_app.hello import hello
 
 
 def test_hello():

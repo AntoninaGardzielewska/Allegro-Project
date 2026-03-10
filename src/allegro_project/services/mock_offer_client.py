@@ -1,6 +1,6 @@
-from src.models.offer import Offer
+from allegro_project.models.offer import Offer
 
-from src.data.mock_offers import database
+from allegro_project.data.mock_offers import database
 
 
 def get_offers() -> list[Offer]:

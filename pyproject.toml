@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "faker>=40.11.0",
     "fastapi>=0.132.1",
     "httpx>=0.28.1",
     "pre-commit>=4.5.1",
@@ -31,3 +32,11 @@ typechecking = [
 
 [tool.bandit]
 exclude_dirs = ["tests"]
+
+[tool.pytest.ini_options]
+markers = [
+    "num_of_offers: allows to specify number of initialized elements in db",
+]
+pythonpath = ["src"]
+testpaths = ["tests"]
+

@@ -1,9 +1,8 @@
 from allegro_project.models.offer import Offer
-from allegro_project.data.mock_offers import database
 
 
 class OfferRepository:
-    def __init__(self):
+    def __init__(self, database):
         self.data = database
 
     def get_all(self) -> list[Offer]:

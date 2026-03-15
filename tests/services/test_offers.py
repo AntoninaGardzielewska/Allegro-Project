@@ -23,6 +23,13 @@ class FakeRepository:
             return None
         return Offer.model_validate(offer)
 
+    def get_all_by_name(self, offer_name: str) -> list[Offer]:
+        result = []
+        for offer in self.data.values():
+            if offer_name.lower() in offer["name"].lower():
+                result.append(Offer.model_validate(offer))
+        return result
+
 
 @pytest.fixture()
 def fake_data(request, faker):
@@ -40,7 +47,12 @@ def fake_data(request, faker):
             description = None
         else:
             description = faker.text(max_nb_chars=20)
-        offer = {"id": id, "name": f"Offer {id}", "description": description}
+        offer = {
+            "id": id,
+            "name": f"Offer {id}",
+            "description": description,
+            "price": 1.0,
+        }
         db[id] = offer
     return db
 
@@ -54,9 +66,10 @@ def fake_data(request, faker):
     ],
     indirect=True,
 )
-def test_get_offers_returns_list_of_offers(fake_data):
+@pytest.mark.anyio
+async def test_get_offers_returns_list_of_offers(fake_data):
     repository = FakeRepository(fake_data)
-    result = service.get_offers(repository)
+    result = await service.get_offers(repository)
 
     assert isinstance(result, list)
     assert len(result) == len(fake_data)
@@ -71,27 +84,29 @@ def test_get_offers_returns_list_of_offers(fake_data):
     ],
     indirect=True,
 )
-def test_get_offer_by_id_existing(fake_data):
+@pytest.mark.anyio
+async def test_get_offer_by_id_existing(fake_data):
     repository = FakeRepository(fake_data)
 
     for key, value in fake_data.items():
         expected = value
-        calculated = service.get_offer_by_id(key, repository)
+        calculated = await service.get_offer_by_id(key, repository)
         calculated_dict = calculated.model_dump()
 
         assert isinstance(calculated, Offer)
         assert calculated_dict == expected
 
 
-def test_get_offer_by_id_empty_database():
+@pytest.mark.anyio
+async def test_get_offer_by_id_empty_database():
     data = {}
     repository = FakeRepository(data)
     with pytest.raises(OfferNotFoundError):
-        service.get_offer_by_id(1, repository)
+        await service.get_offer_by_id(1, repository)
     with pytest.raises(OfferNotFoundError):
-        service.get_offer_by_id(100, repository)
+        await service.get_offer_by_id(100, repository)
     with pytest.raises(OfferNotFoundError):
-        service.get_offer_by_id(-1, repository)
+        await service.get_offer_by_id(-1, repository)
 
 
 @pytest.mark.parametrize(
@@ -102,11 +117,12 @@ def test_get_offer_by_id_empty_database():
     ],
     indirect=True,
 )
-def test_get_offer_by_id_missing_id(fake_data):
+@pytest.mark.anyio
+async def test_get_offer_by_id_missing_id(fake_data):
     repository = FakeRepository(fake_data)
     with pytest.raises(OfferNotFoundError):
-        service.get_offer_by_id(100, repository)
+        await service.get_offer_by_id(100, repository)
     with pytest.raises(OfferNotFoundError):
-        service.get_offer_by_id(1000, repository)
+        await service.get_offer_by_id(1000, repository)
     with pytest.raises(OfferNotFoundError):
-        service.get_offer_by_id(-1, repository)
+        await service.get_offer_by_id(-1, repository)

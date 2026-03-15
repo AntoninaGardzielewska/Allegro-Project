@@ -5,12 +5,13 @@ from allegro_project.models.offer import Offer
 from allegro_project.repositories.offer_repository import OfferRepository
 
 valid_database = {
-    1: {"id": 1, "name": "Offer 1", "description": "This is first offer"},
-    2: {"id": 2, "name": "Offer 2"},
+    1: {"id": 1, "name": "Offer 1", "description": "This is first offer", "price": 1.2},
+    2: {"id": 2, "name": "Offer 2", "price": 3.43},
     3: {
         "id": 3,
         "name": "Offer 3",
         "description": "This is third object",
+        "price": 12.32,
     },
 }
 

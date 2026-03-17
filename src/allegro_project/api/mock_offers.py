@@ -25,19 +25,32 @@ def get_repository():
 @router.get("/offers", response_model=list[Offer])
 async def route_get_all_offers(repository=Depends(get_repository)):
     """
-    Fetches all available offers from the repository.
+    Retrieve all available offers.
+
+    Args:
+        repository (OfferRepository): Injected repository instance.
+
+    Returns:
+        list[Offer]: List of all available offers.
     """
+
     return await get_offers(repository)
 
 
 @router.get("/offers/{offer_id}", response_model=Offer)
 async def route_get_offer_by_id(offer_id: int, repository=Depends(get_repository)):
     """
-    Fetches offer with given id from the repository.
+    Retrieve an offer by its unique ID.
+
+    Args:
+        offer_id (int): Identifier of the offer.
+        repository (OfferRepository): Injected repository instance.
+
+    Returns:
+        Offer: The requested offer.
 
     Raises:
-    OfferNotFoundError: If no offer matches the given id.
-
+        HTTPException: If the offer does not exist.
     """
     try:
         return await get_offer_by_id(offer_id, repository)
@@ -51,11 +64,19 @@ async def route_get_best_offer_by_name(
     repository=Depends(get_repository),
 ):
     """
-    Fetches the best offer that maches the given name from the repository.
+    Retrieve the cheapest offer matching the given name.
+
+    Args:
+        offer_name (str): Name or partial name of the offer.
+        repository (OfferRepository): Injected repository instance.
+
+    Returns:
+        Offer: The cheapest matching offer.
 
     Raises:
-        OfferNotFoundError: If no offer matches the given name.
+        HTTPException: If no matching offers are found.
     """
+
     logger.debug("Search best offer for: %s", offer_name)
 
     try:

@@ -88,6 +88,17 @@ def test_repository_get_all_incorrect_values_in_database(database):
         repository.get_all()
 
 
+def test_get_all_mixed_valid_and_invalid():
+    database = {
+        1: {"id": 1, "name": "Offer 1", "price": 1.2},
+        2: {"id": "bad", "name": "Offer 2"},
+    }
+    repository = OfferRepository(database)
+
+    with pytest.raises(ValidationError):
+        repository.get_all()
+
+
 def test_repository_get_by_id_happy_path():
     repository = OfferRepository(valid_database)
 
@@ -114,3 +125,47 @@ def test_repository_get_by_id_incorrect_data():
 
     with pytest.raises(ValidationError):
         repository.get_by_id(1)
+
+
+def test_get_all_by_name_found():
+    repository = OfferRepository(valid_database)
+
+    result = repository.get_all_by_name("Offer")
+
+    assert len(result) == 3
+
+
+def test_get_all_by_name_case_insensitive():
+    repository = OfferRepository(valid_database)
+
+    result = repository.get_all_by_name("offer 1")
+
+    assert len(result) == 1
+    assert result[0].name == "Offer 1"
+
+
+def test_get_all_by_name_partial_match():
+    repository = OfferRepository(valid_database)
+
+    result = repository.get_all_by_name("1")
+
+    assert len(result) == 1
+
+
+def test_get_all_by_name_not_found():
+    repository = OfferRepository(valid_database)
+
+    result = repository.get_all_by_name("XYZ")
+
+    assert result == []
+
+
+def test_repository_does_not_modify_input():
+    import copy
+
+    database = copy.deepcopy(valid_database)
+
+    repository = OfferRepository(database)
+    repository.get_all()
+
+    assert database == valid_database

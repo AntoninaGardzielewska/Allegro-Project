@@ -25,7 +25,7 @@ def fake_data(request, faker):
                 id=i,
                 name=f"Offer {i}",
                 description=description,
-                price=float(i),
+                price=float(1.1 * i),
             )
         )
 
@@ -105,3 +105,70 @@ async def test_get_offer_by_missing_id(fake_data, offer_id):
         await service.get_offer_by_id(offer_id, repository)
 
     repository.get_by_id.assert_called_once_with(offer_id)
+
+
+@pytest.mark.parametrize(
+    "fake_data, offer_name",
+    [
+        pytest.param(1, "offer", id="single offer"),
+        pytest.param(5, "offer", id="multiple offers"),
+    ],
+    indirect=["fake_data"],
+)
+@pytest.mark.anyio
+async def test_find_best_offer_by_name(fake_data, offer_name):
+    repository = Mock()
+    repository.get_all_by_name.side_effect = lambda x: (
+        fake_data if x == offer_name else []
+    )
+
+    best_price = min(o.price for o in fake_data)
+
+    result = await service.find_best_offer_by_name(offer_name, repository)
+
+    assert isinstance(result, Offer)
+    assert result.price == best_price
+    assert result in fake_data
+
+    repository.get_all_by_name.assert_called_once_with(offer_name)
+
+
+@pytest.mark.anyio
+async def test_find_best_offer_single_match():
+    repository = Mock()
+    repository.get_all_by_name.return_value = [
+        Offer(id=1, name="A", price=100),
+    ]
+
+    result = await service.find_best_offer_by_name("A", repository)
+
+    assert result.id == 1
+
+
+@pytest.mark.anyio
+async def test_find_best_offer_same_price(offer_name="Offer"):
+    repository = Mock()
+    price = 3.33
+    repository.get_all_by_name.return_value = [
+        Offer(id=1, name="Offer 1", price=price),
+        Offer(id=2, name="Offer 2", price=price),
+        Offer(id=3, name="Offer 3", price=price),
+    ]
+
+    result = await service.find_best_offer_by_name(offer_name, repository)
+
+    assert isinstance(result, Offer)
+    assert result.price == price
+
+    repository.get_all_by_name.assert_called_once_with(offer_name)
+
+
+@pytest.mark.anyio
+async def test_find_best_offer_by_not_existing_name(offer_name="not existing"):
+    repository = Mock()
+    repository.get_all_by_name.return_value = []
+
+    with pytest.raises(OfferNotFoundError):
+        await service.find_best_offer_by_name(offer_name, repository)
+
+    repository.get_all_by_name.assert_called_once_with(offer_name)

@@ -1,8 +1,9 @@
-from fastapi.testclient import TestClient
-from requests import Response
 from typing import cast
 
-from src.main import app
+from fastapi.testclient import TestClient
+from requests import Response
+
+from allegro_project.main import app
 
 client = TestClient(app)
 

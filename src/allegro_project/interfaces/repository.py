@@ -1,0 +1,9 @@
+from typing import Protocol
+
+from allegro_project.models.offer import Offer
+
+
+class Repository(Protocol):
+    def get_all(self) -> list[Offer]: ...
+    def get_by_id(self, offer_id: int) -> Offer | None: ...
+    def get_all_by_name(self, offer_name: str) -> list[Offer]: ...

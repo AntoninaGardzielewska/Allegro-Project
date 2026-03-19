@@ -1,6 +1,7 @@
-def main():
-    print("Hello from allegro-project!")
+import logging
 
+logging.basicConfig(level=logging.INFO)
 
-if __name__ == "__main__":
-    main()
+logger = logging.getLogger(__name__)
+
+logger.info("Hello logging")

@@ -50,8 +50,7 @@ The final version of the project will include:
 
 2. Create and activate virtual environment:
 ```
-    poetry install
-    poetry shell
+    uv sync
 ```
 
 3.Run tests:

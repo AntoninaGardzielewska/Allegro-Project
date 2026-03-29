@@ -1,6 +1,7 @@
 # Python
 .venv
 env/
+.env
 __pycache__/
 *.pyc
 *.pyo
@@ -33,3 +34,7 @@ docs/
 
 # Logging
 *.log
+
+
+# Notes
+NOTES.md

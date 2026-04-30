@@ -12,7 +12,7 @@ dependencies = [
     "httpx>=0.28.1",
     "pip-audit>=2.10.0",
     "pre-commit>=4.5.1",
-    "pytest>=9.0.2",
+    "pytest>=9.0.3",
     "pytest-asyncio>=1.3.0",
     "pytest-cov>=7.0.0",
     "requests>=2.33.0",
@@ -21,7 +21,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["coverage>=7.13.4", "pytest>=9.0.2", "pytest-cov>=7.0.0"]
+dev = ["coverage>=7.13.4", "pytest>=9.0.3", "pytest-cov>=7.0.0"]
 typechecking = ['mypy', 'pyright', 'pyrefly', 'pydantic-settings']
 
 [build-system]
@@ -41,5 +41,3 @@ markers = [
 pythonpath = ["src"]
 testpaths = ["tests"]
 
-[tool.pip-audit]
-ignore-vulns = ["CVE-2026-4539"]

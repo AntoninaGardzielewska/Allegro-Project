@@ -1,0 +1,11 @@
+from pydantic import BaseModel
+
+class TokenResponse(BaseModel):
+    access_token: str
+    refresh_token: str
+    expires_in: int
+
+class DeviceCodeResponse(BaseModel):
+    device_code: str
+    verification_uri: str
+    user_code: str
